@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Agent Chariot</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="rotate">
+  <div>
+    <div class="phone">📱</div>
+    <h2>Turn your phone sideways</h2>
+    <p>Agent Chariot is a wide game. It plays best in landscape.</p>
+    <button class="btn" id="playPortrait">Play anyway</button>
+  </div>
+</div>
+<div id="wrap">
+  <div id="stage">
+    <div id="scene" aria-hidden="true"></div>
+    <div id="glTheme" aria-hidden="true">
+      <div class="gt-top"></div>
+      <div class="gt-side">
+        <div class="gt-brand"><img src="assets/gitlab-logo.svg" alt="GitLab">GitLab</div>
+        <div class="gt-proj"><span class="gt-av">H</span>hamster-chariot</div>
+        <div class="gt-nav">Pinned</div><div class="gt-nav">Issues <i>42</i></div><div class="gt-nav on">Merge requests <i id="gtNav">17</i></div>
+        <div class="gt-nav">Pipelines</div><div class="gt-nav">Environments</div><div class="gt-nav">Deployments</div><div class="gt-nav">Settings</div>
+      </div>
+      <div class="gt-main">
+        <div class="gt-crumb">hamster-corp / hamster-chariot / Merge requests</div>
+        <div class="gt-head"><span>Merge requests</span><span class="gt-new">New merge request</span></div>
+        <div class="gt-tabs"><span class="on">Open <b id="gtOpen">1,337</b></span><span>Merged <b id="gtMerged">9,412</b></span><span>Closed <b>88</b></span><span>All</span></div>
+        <div class="gt-list" id="gtList"></div>
+      </div>
+    </div>
+    <div id="matrix" aria-hidden="true">
+      <canvas id="rain" width="960" height="540"></canvas>
+      <div id="gl">
+        <div class="gl-side"><img src="assets/gitlab-logo.svg" alt="GitLab"><span></span><span></span><span></span><span></span></div>
+        <div class="gl-main">
+          <div class="gl-crumb">gitlab-org / agent-chariot › Pipelines › <b id="glPipe">#0</b></div>
+          <div class="gl-title"><span class="gl-badge" id="glStatus">running</span> Pipeline <span id="glPipe2">#0</span> on <code>main</code></div>
+          <div class="gl-stages" id="glStages"></div>
+          <div class="gl-bar"><div id="glBar"></div></div>
+          <div class="gl-deployed" id="glDeployed">🚀 Deployed to <b>production</b></div>
+        </div>
+      </div>
+      <div id="typing"></div>
+    </div>
+    <div id="hud">
+      <div><span class="lbl">Tokens burned</span><span id="score">0</span><span id="mult"></span></div>
+      <div><span class="lbl">High</span><span id="high">0</span></div>
+      <div><span class="lbl">Agents</span><span id="agents">1</span></div>
+      <div class="spacer"></div>
+      <div><span class="lbl">Blockers dodged</span><span id="dodged">0</span></div>
+      <button id="hsHud" class="hs-btn" title="High scores (H)">🏆 High scores</button>
+      <button id="music" class="hs-btn" title="Play music (N)" aria-pressed="false">▶ Music</button>
+      <button id="mute" title="Toggle sound (M)" aria-label="Toggle sound">🔊</button>
+    </div>
+    <div id="team">
+      <svg id="reins" width="1" height="1"></svg>
+      <div id="chariot">
+        <div id="wheel"></div>
+        <img id="hamster" src="assets/hamster-whip.gif" alt="">
+        <div id="rider" class="hidden"></div>
+        <img id="whip" class="hidden" src="assets/whip.gif" alt="">
+        <div id="car"></div>
+      </div>
+    </div>
+    <div id="toasts"></div>
+    <div id="lgtm" aria-hidden="true"></div>
+    <div id="lgtmPipe" aria-hidden="true"></div>
+    <div id="topbar">
+      <a id="homeBtn" class="hs-btn" href="/" title="Back to the home page">🏠 Home</a>
+      <button id="character" class="hs-btn" title="Change who rides the chariot: hamster, ship-it parrot, AI or the This is fine dog">🎭 Change character</button>
+      <button id="themeBtn" class="hs-btn" title="Next theme">🎨 Theme</button>
+      <button id="killClaude" class="hs-btn claude-btn hidden" title="End Claude's run: it drives into the next blocker (K)">Kill <img src="assets/agents/claude.png" alt="Claude"></button>
+      <button id="takeover" class="hs-btn claude-btn hidden" title="Hand over to Claude (C). The run can't go on the high scores.">Make <img src="assets/agents/claude.png" alt="Claude"> play</button>
+    </div>
+    <div id="flash"></div>
+
+    <div id="start" class="overlay">
+      <div class="panel">
+        <div class="title-team">
+          <img class="h" src="assets/hamster-whip.gif" alt="">
+          <img class="agent-icon" src="assets/agents/claude.png" alt=""><img class="agent-icon" src="assets/agents/claude.png" alt=""><img class="agent-icon" src="assets/agents/claude.png" alt="">
+        </div>
+        <h1>Agent Chariot</h1>
+        <p id="introAgents">You are a hamster. Your chariot is pulled by AI agents.<br>
+           More agents keep joining. Nobody asked for this.</p>
+        <p>Dodge the MRs, issues and CVEs before they <b>block</b> you.</p>
+        <p class="touch-only">Drag your finger up and down anywhere to steer. The chariot follows it.</p>
+        <p class="keys-only"><span class="kbd">↑</span> <span class="kbd">↓</span> or <span class="kbd">W</span> <span class="kbd">S</span> to steer &nbsp;·&nbsp; <span class="kbd">P</span> pause &nbsp;·&nbsp; <span class="kbd">M</span> mute &nbsp;·&nbsp; <span class="kbd">N</span> music</p>
+        <div class="btns">
+          <button class="btn" id="startBtn">Spawn first agent<span class="keys-only"> (Space)</span></button>
+          <button class="btn alt claude-btn" id="claudeStart">Make <img src="assets/agents/claude.png" alt="Claude"> play</button>
+          <a class="btn alt" id="homeStart" href="/">Home</a>
+          <button class="btn alt" id="hsStart">🏆 High scores<span class="keys-only"> (H)</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div id="over" class="overlay hidden">
+      <div class="panel">
+        <h2>BLOCKED</h2>
+        <p class="big" id="blocker"></p>
+        <p class="big">Tokens burned: <span id="finalScore">0</span></p>
+        <p id="finalAgents"></p>
+        <p id="newHigh" class="new-hs hidden">★ NEW PERSONAL BEST ★</p>
+        <p id="highLine"></p>
+        <div id="nameEntry" class="hidden">
+          <p><b id="nameMsg">You made the global high scores!</b> Enter your name:</p>
+          <form id="nameForm" autocomplete="off">
+            <input id="nameInput" maxlength="16" placeholder="Your name" aria-label="Your name" spellcheck="false">
+            <button class="btn" type="submit" id="nameSave">Save</button>
+          </form>
+        </div>
+        <p id="saveStatus" class="hs-note hidden"></p>
+        <div class="btns">
+          <button class="btn" id="againBtn">Respawn the fleet<span class="keys-only"> (Space)</span></button>
+          <button class="btn alt claude-btn" id="claudeAgain">Make <img src="assets/agents/claude.png" alt="Claude"> play</button>
+          <button class="btn alt" id="hsOver">🏆 High scores</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="hsView" class="overlay hidden">
+      <div class="panel" id="hsPanel">
+        <h2>🏆 High scores</h2>
+        <p id="hsEmpty" class="hidden">No scores yet. Be the first hamster on the board.</p>
+        <table id="hsTable"><tbody id="hsBody"></tbody></table>
+        <p id="hsScope" class="hs-note"></p>
+        <button class="btn" id="hsClose">Close (Esc)</button>
+      </div>
+    </div>
+
+    <div id="paused" class="overlay hidden">
+      <div class="panel"><h2>Paused</h2><p>The agents are waiting for human review.</p><p>Press <span class="kbd">P</span> to resume</p></div>
+    </div>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

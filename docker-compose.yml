@@ -1,0 +1,13 @@
+# Joins the external "edge" network, where a reverse proxy serves it.
+services:
+  hamster:
+    build: .
+    container_name: hamster
+    env_file: .env # HAMSTER_PASSWORD=..., kept out of git (see .env.example)
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    networks: [edge]
+networks:
+  edge:
+    external: true
